@@ -1,0 +1,21 @@
+{
+    "name": "yotsov/the-ssl-store-sdk",
+    "description": "PHP Sdk for www.thesslstore.com",
+    "license": "Apache License 2.0",
+    "type": "library",
+    "homepage": "www.thesslstore.com",
+    "authors": [
+        {
+            "name": "Nikolay Yotsov",
+            "email": "karboratorr@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "SslStoreSdk": "src/"
+        }
+    }
+}
