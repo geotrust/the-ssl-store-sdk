@@ -12,8 +12,9 @@ use SslStoreSdk\Core\BaseRequest;
 
 class Validate extends BaseRequest
 {
-    public $PartnerCode;
-    public $AuthToken;
-    public $ReplayToken;
-    public $UserAgent;
+    public $CSR;
+    public $ProductCode;
+    public $ServerCount;
+    public $ValidityPeriod;
+    public $WebServerType;
 }
