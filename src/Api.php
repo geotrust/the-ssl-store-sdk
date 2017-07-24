@@ -22,6 +22,7 @@ use SslStoreSdk\Request\Order\RefundStatus;
 use SslStoreSdk\Request\Order\ReIssue;
 use SslStoreSdk\Request\Order\Resend;
 use SslStoreSdk\Request\Order\Status;
+use SslStoreSdk\Request\Order\Validate;
 use SslStoreSdk\Request\Setting\CancelNotification;
 use SslStoreSdk\Request\Setting\SetOrderCallBack;
 use SslStoreSdk\Request\Setting\SetPriceCallBack;
@@ -291,12 +292,12 @@ class Api
     }
 
     /**
-     * @return apiresponse
+     * @return ApiResponse
      */
     public function health_status()
     {
         $url  = $this->getURL() . '/health/status/';
-        $resp = new apiresponse();
+        $resp = new ApiResponse();
 
         return $this->postToCurl($url, null, $resp, 'GET');
     }
@@ -577,7 +578,7 @@ class Api
 
 
     /**
-     * @param NewOrder $order_validate_request
+     * @param Validate $order_validate_request
      *
      * @return apiresponse
      */
