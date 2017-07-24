@@ -12,12 +12,12 @@ use SslStoreSdk\Core\BaseRequest;
 
 class ReIssue extends BaseRequest
 {
-    public function __construct()
+    public function __construct($args = [])
     {
         $this->EditSAN   = [];
         $this->DeleteSAN = [];
         $this->AddSAN    = [];
-        parent::__construct();
+        parent::__construct($args);
     }
 
     public $TheSSLStoreOrderID;

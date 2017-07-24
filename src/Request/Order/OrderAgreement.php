@@ -14,12 +14,12 @@ use SslStoreSdk\Core\OrganizationInfo;
 
 class OrderAgreement extends BaseRequest
 {
-    public function __construct()
+    public function __construct($args = [])
     {
         $this->OrganizationInfo                      = new OrganizationInfo();
         $this->OrganizationInfo->OrganizationAddress = new OrganizationAddress(
         );
-        parent::__construct();
+        parent::__construct($args);
     }
 
     public $CustomOrderID;

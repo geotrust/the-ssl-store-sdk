@@ -13,10 +13,11 @@ use SslStoreSdk\Request\Order\NewOrderRequestFree;
 
 class FreeClaimFree extends BaseRequest
 {
-    public function __construct()
+    public function __construct($args = [])
     {
         $this->NewOrderRequest = new NewOrderRequestFree();
-        parent::__construct();
+
+        parent::__construct($args);
     }
 
     public $ProductCode;

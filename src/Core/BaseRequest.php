@@ -24,7 +24,6 @@ class BaseRequest
         return var_export($this, true);
     }
 
-
     private function map(array $args = [])
     {
         foreach ($args as $propName => $propVal ) {

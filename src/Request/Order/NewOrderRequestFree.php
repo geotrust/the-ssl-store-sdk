@@ -13,10 +13,10 @@ use SslStoreSdk\Core\Contact;
 
 class NewOrderRequestFree extends BaseRequest
 {
-    public function __construct()
+    public function __construct($args = [])
     {
         $this->TechnicalContact = new Contact();
-        parent::__construct();
+        parent::__construct($args);
     }
 
     public $TechnicalContact;

@@ -11,7 +11,6 @@ namespace SslStoreSdk\Core;
 
 class BaseResponse
 {
-
     public $AuthResponse;
 
     public function __construct()

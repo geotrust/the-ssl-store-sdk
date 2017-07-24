@@ -15,14 +15,14 @@ use SslStoreSdk\Core\OrganizationInfo;
 
 class FreeCuinfo extends BaseRequest
 {
-    public function __construct()
+    public function __construct($args = [])
     {
         $this->OrganizationInfo                      = new OrganizationInfo();
         $this->OrganizationInfo->OrganizationAddress = new OrganizationAddress(
         );
         $this->AdminContact                          = new Contact();
         $this->TechnicalContact                      = new Contact();
-        parent::__construct();
+        parent::__construct($args);
     }
 
     public $CustomOrderID;

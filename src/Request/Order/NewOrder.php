@@ -15,7 +15,7 @@ use SslStoreSdk\Core\OrganizationInfo;
 
 class NewOrder extends BaseRequest
 {
-    public function __construct($args)
+    public function __construct($args = [])
     {
         $this->OrganizationInfo                      = new OrganizationInfo();
         $this->OrganizationInfo->OrganizationAddress = new OrganizationAddress(
