@@ -27,6 +27,7 @@ use SslStoreSdk\Request\Setting\CancelNotification;
 use SslStoreSdk\Request\Setting\SetOrderCallBack;
 use SslStoreSdk\Request\Setting\SetPriceCallBack;
 use SslStoreSdk\Request\Setting\SetTemplate;
+use SslStoreSdk\Request\User\Activate;
 use SslStoreSdk\Request\User\Add;
 use SslStoreSdk\Request\User\Deactivate;
 use SslStoreSdk\Request\User\Query;
@@ -322,7 +323,7 @@ class Api
     }
 
     /**
-     * @param \SslStoreSdk\Request\HealthValidate $health_validate_token_request
+     * @param \SslStoreSdk\Request\HealthValidateToken $health_validate_token_request
      *
      * @return HealthValidate
      */
@@ -457,7 +458,7 @@ class Api
      *
      * @return object
      */
-    public function order_modified_summary($order_modified_summary_request)
+        public function order_modified_summary($order_modified_summary_request)
     {
         $url  = $this->getURL() . '/order/getmodifiedorderssummary/';
         $resp = new ModifiedSummary();
@@ -689,7 +690,7 @@ class Api
     }
 
     /**
-     * @param Deactivate $user_activate_request
+     * @param Activate $user_activate_request
      *
      * @return SubUser
      */
