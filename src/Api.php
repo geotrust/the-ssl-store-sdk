@@ -211,7 +211,6 @@ class Api
                     != $requestData->AuthRequest->ReplayToken
                 ) {
                     $result = $responseData;
-                    die('Something wrong with API, ReplayTokens does not match!');
                 }
             }
 
