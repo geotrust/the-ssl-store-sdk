@@ -11,14 +11,20 @@ namespace SslStoreSdk\Request\Order;
 use SslStoreSdk\Core\BaseRequest;
 use SslStoreSdk\Core\OrganizationAddress;
 use SslStoreSdk\Core\OrganizationInfo;
+use SslStoreSdk\Core\WebServerTypeValidator;
 
 class OrderAgreement extends BaseRequest
 {
+    use WebServerTypeValidator;
+
     public function __construct($args = [])
     {
         $this->OrganizationInfo                      = new OrganizationInfo();
         $this->OrganizationInfo->OrganizationAddress = new OrganizationAddress(
         );
+
+        self::validateWebServerType($args);
+
         parent::__construct($args);
     }
 

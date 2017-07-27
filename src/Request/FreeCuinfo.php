@@ -12,9 +12,12 @@ use SslStoreSdk\Core\BaseRequest;
 use SslStoreSdk\Core\Contact;
 use SslStoreSdk\Core\OrganizationAddress;
 use SslStoreSdk\Core\OrganizationInfo;
+use SslStoreSdk\Core\WebServerTypeValidator;
 
 class FreeCuinfo extends BaseRequest
 {
+    use WebServerTypeValidator;
+
     public function __construct($args = [])
     {
         $this->OrganizationInfo                      = new OrganizationInfo();
@@ -22,6 +25,9 @@ class FreeCuinfo extends BaseRequest
         );
         $this->AdminContact                          = new Contact();
         $this->TechnicalContact                      = new Contact();
+
+        self::validateWebServerType($args);
+
         parent::__construct($args);
     }
 

@@ -9,14 +9,20 @@
 namespace SslStoreSdk\Request\Order;
 
 use SslStoreSdk\Core\BaseRequest;
+use SslStoreSdk\Core\WebServerTypeValidator;
 
 class ReIssue extends BaseRequest
 {
+    use WebServerTypeValidator;
+
     public function __construct($args = [])
     {
         $this->EditSAN   = [];
         $this->DeleteSAN = [];
         $this->AddSAN    = [];
+
+        self::validateWebServerType($args);
+
         parent::__construct($args);
     }
 
