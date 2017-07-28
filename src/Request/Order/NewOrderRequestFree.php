@@ -20,4 +20,12 @@ class NewOrderRequestFree extends BaseRequest
     }
 
     public $TechnicalContact;
+    public $CSR;
+    public $isCUOrder;
+    public $isRenewalOrder;
+    public $isTrialOrder;
+    public $ProductCode;
+    public $RelatedTheSSLStoreOrderID;
+    public $ValidityPeriod;
+    public $ServerCount;
 }
