@@ -26,6 +26,5 @@ class NewUser extends BaseRequest
     public $Phone;
     public $Fax;
     public $Mobile;
-    public $UserType;
     public $HearedBy;
 }
