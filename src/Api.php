@@ -190,17 +190,20 @@ class Api
             $respobj = json_decode($response->response);
 
             if ($responseData
-                != null && $respobj
+                != null
+                && $respobj
             ) //Indicates if Casting required to a class type
             {
                 $result = $this->cloneObjectFromJson($responseData, $respobj);
             } else {
                 $responseData->isError = true;
-                $responseData->Message = ['Error' => $response->response ?? 'Empty response!'];
+                $responseData->Message = ['Error' => $response->response ??
+                    'Empty response!'];
 
-                $errorWithMsg =  new \stdClass();
-                $errorWithMsg->isError = true;
-                $errorWithMsg->Message = ['Error' => $response->response ?? 'Empty response!'];
+                $errorWithMsg               = new \stdClass();
+                $errorWithMsg->isError      = true;
+                $errorWithMsg->Message      = ['Error' => $response->response ??
+                    'Empty response!'];
                 $responseData->AuthResponse = $errorWithMsg;
 
                 $result = $responseData;
@@ -222,590 +225,552 @@ class Api
 
             return $responseData;
         }
-}
-
-public
-function getURL()
-{
-    if (strtoupper($this->_apimode) == 'LIVE') {
-        return 'https://api.thesslstore.com/rest';
-    } else {
-        return 'https://sandbox-wbapi.thesslstore.com/rest';
     }
-}
-
-/**
- * @param \SslStoreSdk\Request\Csr $csr_request
- *
- * @return Csr
- */
-public
-function csr($csr_request)
-{
-    $url                 = $this->getURL() . '/csr/';
-    $csrreq              = new \SslStoreSdk\Request\Csr();
-    $csrreq->ProductCode = $csr_request->ProductCode;
-    $csrreq->CSR         = str_ireplace("\r\n", '', $csr_request->CSR);
-    $csrresp             = new Csr();
-
-    return $this->postToCurl($url, $csrreq, $csrresp);
-}
-
-/**
- * @param \SslStoreSdk\Request\SslValidation $ssl_validation_request
- *
- * @return SslValidation
- */
-public
-function ssl_validation($ssl_validation_request)
-{
-    $url  = $this->getURL() . '/sslchecker/';
-    $resp = new SslValidation();
-
-    return $this->postToCurl($url, $ssl_validation_request, $resp);
-}
-
-/**
- * @param \SslStoreSdk\Request\Whois $whois_request
- *
- * @return Whois
- */
-public
-function whois($whois_request)
-{
-    $url  = $this->getURL() . '/whois/';
-    $resp = new Whois();
-
-    return $this->postToCurl($url, $whois_request, $resp);
-}
-
-/**
- * @param \SslStoreSdk\Request\FreeClaimFree $free_claimfree_request
- *
- * @return FreeClaimfree
- */
-public
-function free_claimfree($free_claimfree_request)
-{
-    $url  = $this->getURL() . '/free/claimfree/';
-    $resp = new FreeClaimfree();
-
-    return $this->postToCurl($url, $free_claimfree_request, $resp);
-}
-
-/**
- * @param \SslStoreSdk\Request\FreeCuinfo $free_cuinfo_request
- *
- * @return FreeCuinfo
- */
-public
-function free_cuinfo($free_cuinfo_request)
-{
-    $url  = $this->getURL() . '/free/cuinfo/';
-    $resp = new FreeCuinfo();
-
-    return $this->postToCurl($url, $free_cuinfo_request, $resp);
-}
-
-/**
- * @return ApiResponse
- */
-public
-function health_status()
-{
-    $url  = $this->getURL() . '/health/status/';
-    $resp = new ApiResponse();
-
-    return $this->postToCurl($url, null, $resp, 'GET');
-}
-
-/**
- * @param \SslStoreSdk\Request\HealthValidate $health_validate_request
- *
- * @return HealthValidate
- */
-public
-function health_validate($health_validate_request)
-{
-    $url                                  = $this->getURL()
-        . '/health/validate/';
-    $resp                                 = new HealthValidate();
-    $apidetails                           = $this->getAPIRequest();
-    $health_validate_request->AuthToken   = $apidetails->AuthToken;
-    $health_validate_request->PartnerCode = $apidetails->PartnerCode;
-    $health_validate_request->UserAgent   = $apidetails->UserAgent;
-    $health_validate_request->ReplayToken = $apidetails->ReplayToken;
-
-    return $this->postToCurl($url, $health_validate_request, $resp);
-}
-
-/**
- * @param \SslStoreSdk\Request\HealthValidateToken $health_validate_token_request
- *
- * @return HealthValidate
- */
-public
-function health_validate_token($health_validate_token_request)
-{
-    $url                                                 = $this->getURL()
-        . '/health/validatetoken/';
-    $resp
-                                                         = new HealthValidate();
-    $apidetails
-                                                         = $this->getAPIRequest(
-    );
-    $health_validate_token_request->IsUsedForTokenSystem = true;
-    $health_validate_token_request->UserAgent
-                                                         = $apidetails->UserAgent;
-    $health_validate_token_request->ReplayToken
-                                                         = $apidetails->ReplayToken;
-
-    return $this->postToCurl($url, $health_validate_token_request, $resp);
-}
-
-/**
- * @param OrderAgreement $order_agreement_request
- *
- * @return string
- */
-public
-function order_agreement($order_agreement_request)
-{
-    $url  = $this->getURL() . '/order/agreement/';
-    $resp = new Agreement();
-
-    return $this->postToCurl($url, $order_agreement_request, $resp);
-}
-
-/**
- * @param NewOrder $order_approverlist_request
- *
- * @return ApproverList
- */
-public
-function order_approverlist($order_approverlist_request)
-{
-    $url  = $this->getURL() . '/order/approverlist/';
-    $resp = new ApproverList();
-
-    return $this->postToCurl($url, $order_approverlist_request, $resp);
-}
-
-/**
- * @param Download $order_download_request
- *
- * @return \SslStoreSdk\Response\Order\Download
- */
-public
-function order_download($order_download_request)
-{
-    $url  = $this->getURL() . '/order/download/';
-    $resp = new Download();
-
-    return $this->postToCurl($url, $order_download_request, $resp);
-}
-
-/**
- * @param Download $order_download_request
- *
- * @return DownloadZip
- */
-public
-function order_download_zip($order_download_request)
-{
-    $url  = $this->getURL() . '/order/downloadaszip/';
-    $resp = new DownloadZip();
-
-    return $this->postToCurl($url, $order_download_request, $resp);
-}
-
-
-/**
- * @param InviteOrder $order_inviteorder_request
- *
- * @return Order
- */
-public
-function order_inviteorder($order_inviteorder_request)
-{
-    $url  = $this->getURL() . '/order/inviteorder/';
-    $resp = new Order();
-
-    return $this->postToCurl($url, $order_inviteorder_request, $resp);
-}
-
-/**
- * @param NewOrder $order_neworder_request
- *
- * @return Order
- */
-public
-function order_neworder($order_neworder_request)
-{
-    $url  = $this->getURL() . '/order/neworder/';
-    $resp = new Order();
-
-    return $this->postToCurl($url, $order_neworder_request, $resp);
-}
-
-/**
- * @param NewOrderRequestFree $order_neworder_request
- *
- * @return Order
- */
-public
-function order_midterm_upgrade($order_neworder_request)
-{
-    $url  = $this->getURL() . '/order/midtermupgrade/';
-    $resp = new Order();
-
-    return $this->postToCurl($url, $order_neworder_request, $resp);
-}
-
-/**  Should return array(order_response())
- *
- * @param \SslStoreSdk\Request\Order\Query $order_query_request
- *
- * @return object
- */
-public
-function order_query($order_query_request)
-{
-    $url  = $this->getURL() . '/order/query/';
-    $resp = new \SslStoreSdk\Response\Order\Query();
-
-    return $this->postToCurl($url, $order_query_request, $resp);
-}
-
-/**  Should return array(order_modified_summary_response())
- *
- * @param \SslStoreSdk\Request\Order\ModifiedSummary $order_modified_summary_request
- *
- * @return object
- */
-public
-function order_modified_summary($order_modified_summary_request)
-{
-    $url  = $this->getURL() . '/order/getmodifiedorderssummary/';
-    $resp = new ModifiedSummary();
-
-    return $this->postToCurl($url, $order_modified_summary_request, $resp);
-}
-
-/**
- * @param \SslStoreSdk\Request\Order\VulnerabilityScan $order_refundrequest_request
- *
- * @return ApiResponse
- */
-public
-function order_certificaterevokerequest($order_certificaterevokerequest_request
-) {
-    $url  = $this->getURL() . '/order/certificaterevokerequest/';
-    $resp = new ApiResponse();
-
-    return $this->postToCurl(
-        $url, $order_certificaterevokerequest_request, $resp
-    );
-}
-
-/**
- * @param \SslStoreSdk\Request\Order\VulnerabilityScan $order_refundrequest_request
- *
- * @return VulnerabilityScan
- */
-public
-function order_vulnerabilityscanrequest($order_vulnerabilityscanrequest_request
-) {
-    $url  = $this->getURL() . '/order/vulnerabilityscanrequest/';
-    $resp = new VulnerabilityScan();
-
-    return $this->postToCurl(
-        $url, $order_vulnerabilityscanrequest_request, $resp
-    );
-}
-
-/**
- * @param Refund $order_refundrequest_request
- *
- * @return Order
- */
-public
-function order_refundrequest($order_refundrequest_request)
-{
-    $url  = $this->getURL() . '/order/refundrequest/';
-    $resp = new Order();
-
-    return $this->postToCurl($url, $order_refundrequest_request, $resp);
-}
-
-/**
- * @param RefundStatus $order_refundstatus_request
- *
- * @return Order
- */
-public
-function order_refundstatus($order_refundstatus_request)
-{
-    $url  = $this->getURL() . '/order/refundstatus/';
-    $resp = new Order();
-
-    return $this->postToCurl($url, $order_refundstatus_request, $resp);
-}
-
-/**
- * @param ReIssue $order_reissue_request
- *
- * @return Order
- */
-public
-function order_reissue($order_reissue_request)
-{
-    $url  = $this->getURL() . '/order/reissue/';
-    $resp = new Order();
-
-    return $this->postToCurl($url, $order_reissue_request, $resp);
-}
-
-/**
- * @param ChangeApproverEmail $order_changeapproveremail_request
- *
- * @return ApiResponse
- */
-public
-function order_changeapproveremail($order_changeapproveremail_request
-) {
-    $url  = $this->getURL() . '/order/changeapproveremail/';
-    $resp = new ApiResponse();
-
-    return $this->postToCurl(
-        $url, $order_changeapproveremail_request, $resp
-    );
-}
-
-
-/**
- * @param Resend $order_resend_request
- *
- * @return ApiResponse
- */
-public
-function order_resend($order_resend_request)
-{
-    $url  = $this->getURL() . '/order/resend/';
-    $resp = new ApiResponse();
-
-    return $this->postToCurl($url, $order_resend_request, $resp);
-}
-
-/**
- * @param Status $order_status_request
- *
- * @return Order
- */
-public
-function order_status($order_status_request)
-{
-    $url  = $this->getURL() . '/order/status/';
-    $resp = new Order();
-
-    return $this->postToCurl($url, $order_status_request, $resp);
-}
-
-
-/**
- * @param Validate $order_validate_request
- *
- * @return apiresponse
- */
-public
-function order_validate($order_validate_request)
-{
-    $url  = $this->getURL() . '/order/validate/';
-    $resp = new ApiResponse();
-
-    return $this->postToCurl($url, $order_validate_request, $resp);
-}
-
-/**
- * @param \SslStoreSdk\Request\Order\Pmr $order_pmr_request
- *
- * @return apiresponse
- */
-public
-function order_pmr($order_pmr_request)
-{
-    $url  = $this->getURL() . '/order/pmrrequest/';
-    $resp = new Pmr();
-
-    return $this->postToCurl($url, $order_pmr_request, $resp);
-
-}
-
-/**
- * @param \SslStoreSdk\Request\Product\Query $product_query_request
- *
- * @return object
- */
-public
-function product_query($product_query_request)
-{
-    $url  = $this->getURL() . '/product/query/';
-    $resp = new ApiResponse();
-
-    return $this->postToCurl($url, $product_query_request, $resp);
-}
-
-/**
- * @param SetOrderCallBack $setting_setordercallback_request
- *
- * @return apiresponse
- */
-public
-function setting_setordercallback($setting_setordercallback_request)
-{
-    $url  = $this->getURL() . '/setting/setordercallback/';
-    $resp = new ApiResponse();
-
-    return $this->postToCurl(
-        $url, $setting_setordercallback_request, $resp
-    );
-}
-
-/**
- * @param SetPriceCallBack $setting_setpricecallback_request
- *
- * @return apiresponse
- */
-public
-function setting_setpricecallback($setting_setpricecallback_request)
-{
-    $url  = $this->getURL() . '/setting/setpricecallback/';
-    $resp = new ApiResponse();
-
-    return $this->postToCurl(
-        $url, $setting_setpricecallback_request, $resp
-    );
-}
-
-/**
- * @param SetTemplate $setting_settemplate_request
- *
- * @return apiresponse
- */
-public
-function setting_settemplate($setting_settemplate_request)
-{
-    $url  = $this->getURL() . '/setting/settemplate/';
-    $resp = new ApiResponse();
-
-    return $this->postToCurl($url, $setting_settemplate_request, $resp);
-}
-
-/**
- * @param CancelNotification $setting_cancelnotification_request
- *
- * @return ApiResponse
- */
-public
-function setting_setcancelnotification($setting_cancelnotification_request
-) {
-    $url  = $this->getURL() . '/setting/cancelnotification/';
-    $resp = new ApiResponse();
-
-    return $this->postToCurl(
-        $url, $setting_cancelnotification_request, $resp
-    );
-}
-
-/**
- * @param Add $user_add_request
- *
- * @return SubUser
- */
-public
-function user_add($user_add_request)
-{
-    $url  = $this->getURL() . '/user/add/';
-    $resp = new SubUser();
-
-    return $this->postToCurl($url, $user_add_request, $resp);
-}
-
-/**
- * @param Activate $user_activate_request
- *
- * @return SubUser
- */
-public
-function user_activate($user_activate_request)
-{
-
-    $url  = $this->getURL() . '/user/activate/';
-    $resp = new SubUser();
-
-    return $this->postToCurl($url, $user_activate_request, $resp);
-}
-
-/**
- * @param Deactivate $user_deactivate_request
- *
- * @return SubUser
- */
-public
-function user_deactivate($user_deactivate_request)
-{
-    $url  = $this->getURL() . '/user/deactivate/';
-    $resp = new SubUser();
-
-    return $this->postToCurl($url, $user_deactivate_request, $resp);
-}
-
-/**
- * @param Query $user_query_request
- *
- * @return object
- */
-public
-function user_query($user_query_request)
-{
-    $url  = $this->getURL() . '/user/query/';
-    $resp = new \SslStoreSdk\Response\User\Query();
-
-    return $this->postToCurl($url, $user_query_request, $resp);
-}
-
-/**
- * @param \SslStoreSdk\Request\User\NewUser $user_newuser_request
- *
- * @return object
- */
-public
-function user_newuser($user_newuser_request)
-{
-    $url  = $this->getURL() . '/user/newuser/';
-    $resp = new NewUser();
-
-    return $this->postToCurl($url, $user_newuser_request, $resp);
-}
-
-/**
- * @param \SslStoreSdk\Request\User\AccountDetail $user_account_detail_request
- *
- * @return \SslStoreSdk\Response\User\AccountDetail
- */
-public
-function user_account_detail($user_account_detail_request)
-{
-    $url        = $this->getURL() . '/user/accountdetail/';
-    $resp       = new AccountDetail();
-    $apidetails = $this->getAPIRequest();
-
-    $user_account_detail_request->PartnerCode = $apidetails->PartnerCode;
-    $user_account_detail_request->AuthToken   = $apidetails->AuthToken;
-    $user_account_detail_request->ReplayToken = $apidetails->ReplayToken;
-    $user_account_detail_request->UserAgent   = $apidetails->UserAgent;
-    $user_account_detail_request->IPAddress   = $apidetails->IPAddress;
-
-    return $this->postToCurl($url, $user_account_detail_request, $resp);
-}
+
+    public function getURL()
+    {
+        if (strtoupper($this->_apimode) == 'LIVE') {
+            return 'https://api.thesslstore.com/rest';
+        } else {
+            return 'https://sandbox-wbapi.thesslstore.com/rest';
+        }
+    }
+
+    /**
+     * @param \SslStoreSdk\Request\Csr $csr_request
+     *
+     * @return Csr
+     */
+    public function csr($csr_request
+    ) {
+        $url                 = $this->getURL() . '/csr/';
+        $csrreq              = new \SslStoreSdk\Request\Csr();
+        $csrreq->ProductCode = $csr_request->ProductCode;
+        $csrreq->CSR         = str_ireplace("\r\n", '', $csr_request->CSR);
+        $csrresp             = new Csr();
+
+        return $this->postToCurl($url, $csrreq, $csrresp);
+    }
+
+    /**
+     * @param \SslStoreSdk\Request\SslValidation $ssl_validation_request
+     *
+     * @return SslValidation
+     */
+    public function ssl_validation($ssl_validation_request
+    ) {
+        $url  = $this->getURL() . '/sslchecker/';
+        $resp = new SslValidation();
+
+        return $this->postToCurl($url, $ssl_validation_request, $resp);
+    }
+
+    /**
+     * @param \SslStoreSdk\Request\Whois $whois_request
+     *
+     * @return Whois
+     */
+    public function whois($whois_request
+    ) {
+        $url  = $this->getURL() . '/whois/';
+        $resp = new Whois();
+
+        return $this->postToCurl($url, $whois_request, $resp);
+    }
+
+    /**
+     * @param \SslStoreSdk\Request\FreeClaimFree $free_claimfree_request
+     *
+     * @return FreeClaimfree
+     */
+    public function free_claimfree($free_claimfree_request
+    ) {
+        $url  = $this->getURL() . '/free/claimfree/';
+        $resp = new FreeClaimfree();
+
+        return $this->postToCurl($url, $free_claimfree_request, $resp);
+    }
+
+    /**
+     * @param \SslStoreSdk\Request\FreeCuinfo $free_cuinfo_request
+     *
+     * @return FreeCuinfo
+     */
+    public function free_cuinfo($free_cuinfo_request
+    ) {
+        $url  = $this->getURL() . '/free/cuinfo/';
+        $resp = new FreeCuinfo();
+
+        return $this->postToCurl($url, $free_cuinfo_request, $resp);
+    }
+
+    /**
+     * @return ApiResponse
+     */
+    public function health_status()
+    {
+        $url  = $this->getURL() . '/health/status/';
+        $resp = new ApiResponse();
+
+        return $this->postToCurl($url, null, $resp, 'GET');
+    }
+
+    /**
+     * @param \SslStoreSdk\Request\HealthValidate $health_validate_request
+     *
+     * @return HealthValidate
+     */
+    public function health_validate($health_validate_request
+    ) {
+        $url                                  = $this->getURL()
+            . '/health/validate/';
+        $resp                                 = new HealthValidate();
+        $apidetails                           = $this->getAPIRequest();
+        $health_validate_request->AuthToken   = $apidetails->AuthToken;
+        $health_validate_request->PartnerCode = $apidetails->PartnerCode;
+        $health_validate_request->UserAgent   = $apidetails->UserAgent;
+        $health_validate_request->ReplayToken = $apidetails->ReplayToken;
+
+        return $this->postToCurl($url, $health_validate_request, $resp);
+    }
+
+    /**
+     * @param \SslStoreSdk\Request\HealthValidateToken $health_validate_token_request
+     *
+     * @return HealthValidate
+     */
+    public function health_validate_token($health_validate_token_request
+    ) {
+        $url                                                 = $this->getURL()
+            . '/health/validatetoken/';
+        $resp
+                                                             = new HealthValidate(
+        );
+        $apidetails
+                                                             = $this->getAPIRequest(
+        );
+        $health_validate_token_request->IsUsedForTokenSystem = true;
+        $health_validate_token_request->UserAgent
+                                                             = $apidetails->UserAgent;
+        $health_validate_token_request->ReplayToken
+                                                             = $apidetails->ReplayToken;
+
+        return $this->postToCurl($url, $health_validate_token_request, $resp);
+    }
+
+    /**
+     * @param OrderAgreement $order_agreement_request
+     *
+     * @return string
+     */
+    public function order_agreement($order_agreement_request
+    ) {
+        $url  = $this->getURL() . '/order/agreement/';
+        $resp = new Agreement();
+
+        return $this->postToCurl($url, $order_agreement_request, $resp);
+    }
+
+    /**
+     * @param NewOrder $order_approverlist_request
+     *
+     * @return ApproverList
+     */
+    public function order_approverlist($order_approverlist_request
+    ) {
+        $url  = $this->getURL() . '/order/approverlist/';
+        $resp = new ApproverList();
+
+        return $this->postToCurl($url, $order_approverlist_request, $resp);
+    }
+
+    /**
+     * @param Download $order_download_request
+     *
+     * @return \SslStoreSdk\Response\Order\Download
+     */
+    public function order_download($order_download_request
+    ) {
+        $url  = $this->getURL() . '/order/download/';
+        $resp = new Download();
+
+        return $this->postToCurl($url, $order_download_request, $resp);
+    }
+
+    /**
+     * @param Download $order_download_request
+     *
+     * @return DownloadZip
+     */
+    public function order_download_zip($order_download_request
+    ) {
+        $url  = $this->getURL() . '/order/downloadaszip/';
+        $resp = new DownloadZip();
+
+        return $this->postToCurl($url, $order_download_request, $resp);
+    }
+
+
+    /**
+     * @param InviteOrder $order_inviteorder_request
+     *
+     * @return Order
+     */
+    public function order_inviteorder($order_inviteorder_request
+    ) {
+        $url  = $this->getURL() . '/order/inviteorder/';
+        $resp = new Order();
+
+        return $this->postToCurl($url, $order_inviteorder_request, $resp);
+    }
+
+    /**
+     * @param NewOrder $order_neworder_request
+     *
+     * @return Order
+     */
+    public function order_neworder($order_neworder_request
+    ) {
+        $url  = $this->getURL() . '/order/neworder/';
+        $resp = new Order();
+
+        return $this->postToCurl($url, $order_neworder_request, $resp);
+    }
+
+    /**
+     * @param NewOrderRequestFree $order_neworder_request
+     *
+     * @return Order
+     */
+    public function order_midterm_upgrade($order_neworder_request
+    ) {
+        $url  = $this->getURL() . '/order/midtermupgrade/';
+        $resp = new Order();
+
+        return $this->postToCurl($url, $order_neworder_request, $resp);
+    }
+
+    /**  Should return array(order_response())
+     *
+     * @param \SslStoreSdk\Request\Order\Query $order_query_request
+     *
+     * @return object
+     */
+    public function order_query($order_query_request
+    ) {
+        $url  = $this->getURL() . '/order/query/';
+        $resp = new \SslStoreSdk\Response\Order\Query();
+
+        return $this->postToCurl($url, $order_query_request, $resp);
+    }
+
+    /**  Should return array(order_modified_summary_response())
+     *
+     * @param \SslStoreSdk\Request\Order\ModifiedSummary $order_modified_summary_request
+     *
+     * @return object
+     */
+    public function order_modified_summary($order_modified_summary_request
+    ) {
+        $url  = $this->getURL() . '/order/getmodifiedorderssummary/';
+        $resp = new ModifiedSummary();
+
+        return $this->postToCurl($url, $order_modified_summary_request, $resp);
+    }
+
+    /**
+     * @param \SslStoreSdk\Request\Order\VulnerabilityScan $order_refundrequest_request
+     *
+     * @return ApiResponse
+     */
+    public function order_certificaterevokerequest($order_certificaterevokerequest_request
+    ) {
+        $url  = $this->getURL() . '/order/certificaterevokerequest/';
+        $resp = new ApiResponse();
+
+        return $this->postToCurl(
+            $url, $order_certificaterevokerequest_request, $resp
+        );
+    }
+
+    /**
+     * @param \SslStoreSdk\Request\Order\VulnerabilityScan $order_refundrequest_request
+     *
+     * @return VulnerabilityScan
+     */
+    public function order_vulnerabilityscanrequest($order_vulnerabilityscanrequest_request
+    ) {
+        $url  = $this->getURL() . '/order/vulnerabilityscanrequest/';
+        $resp = new VulnerabilityScan();
+
+        return $this->postToCurl(
+            $url, $order_vulnerabilityscanrequest_request, $resp
+        );
+    }
+
+    /**
+     * @param Refund $order_refundrequest_request
+     *
+     * @return Order
+     */
+    public function order_refundrequest($order_refundrequest_request
+    ) {
+        $url  = $this->getURL() . '/order/refundrequest/';
+        $resp = new Order();
+
+        return $this->postToCurl($url, $order_refundrequest_request, $resp);
+    }
+
+    /**
+     * @param RefundStatus $order_refundstatus_request
+     *
+     * @return Order
+     */
+    public function order_refundstatus($order_refundstatus_request
+    ) {
+        $url  = $this->getURL() . '/order/refundstatus/';
+        $resp = new Order();
+
+        return $this->postToCurl($url, $order_refundstatus_request, $resp);
+    }
+
+    /**
+     * @param ReIssue $order_reissue_request
+     *
+     * @return Order
+     */
+    public function order_reissue($order_reissue_request
+    ) {
+        $url  = $this->getURL() . '/order/reissue/';
+        $resp = new Order();
+
+        return $this->postToCurl($url, $order_reissue_request, $resp);
+    }
+
+    /**
+     * @param ChangeApproverEmail $order_changeapproveremail_request
+     *
+     * @return ApiResponse
+     */
+    public function order_changeapproveremail($order_changeapproveremail_request
+    ) {
+        $url  = $this->getURL() . '/order/changeapproveremail/';
+        $resp = new ApiResponse();
+
+        return $this->postToCurl(
+            $url, $order_changeapproveremail_request, $resp
+        );
+    }
+
+
+    /**
+     * @param Resend $order_resend_request
+     *
+     * @return ApiResponse
+     */
+    public function order_resend($order_resend_request
+    ) {
+        $url  = $this->getURL() . '/order/resend/';
+        $resp = new ApiResponse();
+
+        return $this->postToCurl($url, $order_resend_request, $resp);
+    }
+
+    /**
+     * @param Status $order_status_request
+     *
+     * @return Order
+     */
+    public function order_status($order_status_request
+    ) {
+        $url  = $this->getURL() . '/order/status/';
+        $resp = new Order();
+
+        return $this->postToCurl($url, $order_status_request, $resp);
+    }
+
+
+    /**
+     * @param Validate $order_validate_request
+     *
+     * @return apiresponse
+     */
+    public function order_validate($order_validate_request
+    ) {
+        $url  = $this->getURL() . '/order/validate/';
+        $resp = new ApiResponse();
+
+        return $this->postToCurl($url, $order_validate_request, $resp);
+    }
+
+    /**
+     * @param \SslStoreSdk\Request\Order\Pmr $order_pmr_request
+     *
+     * @return apiresponse
+     */
+    public function order_pmr($order_pmr_request
+    ) {
+        $url  = $this->getURL() . '/order/pmrrequest/';
+        $resp = new Pmr();
+
+        return $this->postToCurl($url, $order_pmr_request, $resp);
+
+    }
+
+    /**
+     * @param \SslStoreSdk\Request\Product\Query $product_query_request
+     *
+     * @return object
+     */
+    public function product_query($product_query_request
+    ) {
+        $url  = $this->getURL() . '/product/query/';
+        $resp = new ApiResponse();
+
+        return $this->postToCurl($url, $product_query_request, $resp);
+    }
+
+    /**
+     * @param SetOrderCallBack $setting_setordercallback_request
+     *
+     * @return apiresponse
+     */
+    public function setting_setordercallback($setting_setordercallback_request
+    ) {
+        $url  = $this->getURL() . '/setting/setordercallback/';
+        $resp = new ApiResponse();
+
+        return $this->postToCurl(
+            $url, $setting_setordercallback_request, $resp
+        );
+    }
+
+    /**
+     * @param SetPriceCallBack $setting_setpricecallback_request
+     *
+     * @return apiresponse
+     */
+    public function setting_setpricecallback($setting_setpricecallback_request
+    ) {
+        $url  = $this->getURL() . '/setting/setpricecallback/';
+        $resp = new ApiResponse();
+
+        return $this->postToCurl(
+            $url, $setting_setpricecallback_request, $resp
+        );
+    }
+
+    /**
+     * @param SetTemplate $setting_settemplate_request
+     *
+     * @return apiresponse
+     */
+    public function setting_settemplate($setting_settemplate_request
+    ) {
+        $url  = $this->getURL() . '/setting/settemplate/';
+        $resp = new ApiResponse();
+
+        return $this->postToCurl($url, $setting_settemplate_request, $resp);
+    }
+
+    /**
+     * @param CancelNotification $setting_cancelnotification_request
+     *
+     * @return ApiResponse
+     */
+    public function setting_setcancelnotification($setting_cancelnotification_request
+    ) {
+        $url  = $this->getURL() . '/setting/cancelnotification/';
+        $resp = new ApiResponse();
+
+        return $this->postToCurl(
+            $url, $setting_cancelnotification_request, $resp
+        );
+    }
+
+    /**
+     * @param Add $user_add_request
+     *
+     * @return SubUser
+     */
+    public function user_add($user_add_request
+    ) {
+        $url  = $this->getURL() . '/user/add/';
+        $resp = new SubUser();
+
+        return $this->postToCurl($url, $user_add_request, $resp);
+    }
+
+    /**
+     * @param Activate $user_activate_request
+     *
+     * @return SubUser
+     */
+    public function user_activate($user_activate_request
+    ) {
+
+        $url  = $this->getURL() . '/user/activate/';
+        $resp = new SubUser();
+
+        return $this->postToCurl($url, $user_activate_request, $resp);
+    }
+
+    /**
+     * @param Deactivate $user_deactivate_request
+     *
+     * @return SubUser
+     */
+    public function user_deactivate($user_deactivate_request
+    ) {
+        $url  = $this->getURL() . '/user/deactivate/';
+        $resp = new SubUser();
+
+        return $this->postToCurl($url, $user_deactivate_request, $resp);
+    }
+
+    /**
+     * @param Query $user_query_request
+     *
+     * @return object
+     */
+    public function user_query($user_query_request
+    ) {
+        $url  = $this->getURL() . '/user/query/';
+        $resp = new \SslStoreSdk\Response\User\Query();
+
+        return $this->postToCurl($url, $user_query_request, $resp);
+    }
+
+    /**
+     * @param \SslStoreSdk\Request\User\NewUser $user_newuser_request
+     *
+     * @return object
+     */
+    public function user_newuser($user_newuser_request
+    ) {
+        $url  = $this->getURL() . '/user/newuser/';
+        $resp = new NewUser();
+
+        return $this->postToCurl($url, $user_newuser_request, $resp);
+    }
+
+    /**
+     * @param \SslStoreSdk\Request\User\AccountDetail $user_account_detail_request
+     *
+     * @return \SslStoreSdk\Response\User\AccountDetail
+     */
+    public function user_account_detail($user_account_detail_request
+    ) {
+        $url        = $this->getURL() . '/user/accountdetail/';
+        $resp       = new AccountDetail();
+        $apidetails = $this->getAPIRequest();
+
+        $user_account_detail_request->PartnerCode = $apidetails->PartnerCode;
+        $user_account_detail_request->AuthToken   = $apidetails->AuthToken;
+        $user_account_detail_request->ReplayToken = $apidetails->ReplayToken;
+        $user_account_detail_request->UserAgent   = $apidetails->UserAgent;
+        $user_account_detail_request->IPAddress   = $apidetails->IPAddress;
+
+        return $this->postToCurl($url, $user_account_detail_request, $resp);
+    }
 }
