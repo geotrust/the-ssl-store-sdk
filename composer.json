@@ -1,5 +1,5 @@
 {
-    "name": "yotsov/the-ssl-store-sdk",
+    "name": "geotrust/the-ssl-store-sdk",
     "description": "PHP Sdk for www.thesslstore.com",
     "license": "Apache License 2.0",
     "type": "library",
@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "SslStoreSdk": "src/"
+            "SslStoreSdk\\": "src/"
         }
     }
 }
